@@ -28,7 +28,8 @@ cookies =dict(language='en',updateTips='true')
 def my_shodan(SHODAN_API_KEY,dest_path):
 	api = shodan.Shodan(SHODAN_API_KEY)
 	try:
-		results = api.search('netgear port:"8443" country:"US"',limit=500)
+		#results = api.search('netgear port:"8443" country:"US"',limit=100)
+		results = api.search('netgear')
 		print 'Results found: %s' % results['total']
 		with open(dest_path,'w') as f:
 			for result in results['matches']:
@@ -58,11 +59,11 @@ def all_scan(dest_path,headers,cookies):
 			headers['Host']=ip.strip('\n')
 			dest_address = ip.strip('\n')
 			threads.append(threading.Thread(target=scan,args=(dest_address,headers,cookies)))
+		print 'start'
 
 		for t in threads:
-			t.setDaemon(True)
-			t.start()
-		t.join()		
+			t.setDaemon(False)
+			t.start()	
 #				dest_address = "http://"+ ip.strip('\n')
 				# print dest_address
 				# r = requests.get(dest_address,headers=headers,cookies=cookies,timeout=2,verify=False)

@@ -43,7 +43,8 @@ def all_scan(dest_path,headers,cookies):
 				dest_address = "http://"+ ip.strip('\n') +"/PSIA/Custom/SelfExt/userCheck"
 				print dest_address
 				r = requests.get(dest_address,headers=headers,cookies=cookies,timeout=5)
-				print r.text
+				if r.status_code == 200:
+					print 'ok'
 			except requests.exceptions.RequestException, e:
 				#raise e
 				continue
@@ -52,10 +53,13 @@ def one_scan(remote_address,headers,cookies):
 	try:
 		headers['Host']=remote_address
 		headers['Referer']="http://" + remote_address +"/doc/page/login.asp"
-		dest_address = "http://"+ remote_address +"/PSIA/Custom/SelfExt/userCheck"
-		print dest_address
+		#dest_address = "http://"+ remote_address +"/PSIA/Custom/SelfExt/userCheck"
+		#dest_address = "http://admin:12345@" + remote_address +"/ISAPI/Security/userCheck?"
+		dest_address = "http://" + remote_address +"/ISAPI/Security/userCheck"
+		#dest_address = "http://"+ remote_address
 		r = requests.get(dest_address,headers=headers,cookies=cookies,timeout=5)
-		print r.text
+		if r.status_code == 200:
+			print 'ok'
 	except requests.exceptions.RequestException, e:
 		raise e
 		
